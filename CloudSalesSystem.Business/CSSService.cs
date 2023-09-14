@@ -1,4 +1,5 @@
 ﻿using CloudSalesSystem.Business.Interfaces;
+using CloudSalesSystem.Business.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace CloudSalesSystem.Business
 {
     public class CSSService : ICSSService
     {
+        
     }
 }

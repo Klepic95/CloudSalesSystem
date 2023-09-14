@@ -125,7 +125,7 @@ namespace CloudSalesSystem.DAL
             return softwaresToReturn;
         }
 
-        public async Task<Account> InsertNewAccount(Account account)
+        public async Task<Account> InsertNewAccountAsync(Account account)
         {
             var accountDto = new AccountDto(account.AccountId, account.AccountName);
             _context.Account.Add(accountDto);
@@ -134,7 +134,7 @@ namespace CloudSalesSystem.DAL
             return await Task.FromResult(account);
         }
 
-        public async Task<Software> InsertNewAccountSoftware(string accountId, Software software)
+        public async Task<Software> InsertNewAccountSoftwareAsync(string accountId, Software software)
         {
             var softwareDto = new SoftwareDto(
                     software.SoftwareId,

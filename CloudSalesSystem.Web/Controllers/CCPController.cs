@@ -18,7 +18,7 @@ namespace CloudSalesSystem.Controllers
             return Ok();
         }
 
-        [HttpPost("changeServiceQuantity")]
+        [HttpPut("changeServiceQuantity")]
         public async Task<IActionResult> ChangeServiceQuantity(int quantity, string subscriptionId, string softwareId)
         {
             return Ok();

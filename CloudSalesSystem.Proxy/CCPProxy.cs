@@ -63,6 +63,20 @@ namespace CloudSalesSystem.Proxy
             return await Task.FromResult(software);
         }
 
+        public async Task<Software> GetSoftwareByNameAsync(string softwareName)
+        {
+            Software software;
+            try
+            {
+                software = GetSoftwares().FirstOrDefault(x => x.SoftwareName == softwareName);
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            return await Task.FromResult(software);
+        }
+
         public async Task<Software> OrderSoftwareAsync(Software software)
         {
             return await Task.FromResult(software);

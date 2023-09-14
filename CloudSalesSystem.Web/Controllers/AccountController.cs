@@ -24,6 +24,18 @@ namespace CloudSalesSystem.Controllers
             return Ok();
         }
 
+        [HttpPost("createNewAccount")]
+        public async Task<ActionResult<Account>> CreateNewAccount([FromBody] Account account)
+        {
+            return Ok();
+        }
+
+        [HttpPost("createNewAccountSoftware")]
+        public async Task<ActionResult<Software>> CreateNewAccountSoftware(string accountId, [FromBody] Software software)
+        {
+            return Ok();
+        }
+
         [HttpPut("extendSoftwareLicence")]
         public async Task<ActionResult<Software>> ExtendSoftwareLicence(string softwareId, DateTime extendedDate)
         {
