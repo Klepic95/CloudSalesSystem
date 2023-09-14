@@ -20,7 +20,7 @@ namespace CloudSalesSystem.DAL.DTOs
         public DateTime EndDate { get; set; }
         public bool IsCancelled { get; set; } = true;
 
-        public int AccountRefId { get; set; }
+        public string AccountRefId { get; set; }
         public AccountDto Account { get; set; }
 
         public SoftwareDto()
@@ -28,7 +28,7 @@ namespace CloudSalesSystem.DAL.DTOs
             Account = new AccountDto();
         }
 
-        public SoftwareDto(string softwareId, string softwareName, int quantity, double price, DateTime endDate, bool isCancelled)
+        public SoftwareDto(string softwareId, string softwareName, int quantity, double price, DateTime endDate, bool isCancelled, string accountRefId)
         {
             SoftwareId = softwareId;
             SoftwareName = softwareName;
@@ -36,6 +36,8 @@ namespace CloudSalesSystem.DAL.DTOs
             Price = price;
             EndDate = endDate;
             IsCancelled = isCancelled;
+            AccountRefId = accountRefId;
+            Account = new AccountDto();
         }
     }
 

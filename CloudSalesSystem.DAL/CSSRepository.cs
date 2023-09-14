@@ -1,5 +1,7 @@
 ﻿using CloudSalesSystem.Business.Models;
+using CloudSalesSystem.DAL.DTOs;
 using CloudSalesSystem.DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,39 +12,182 @@ namespace CloudSalesSystem.DAL
 {
     public class CSSRepository : ICSSRepository
     {
-        public Task<Software> CancelAccountSoftwareAsync(string accountId, Software software)
+        private readonly CSSContext _context;
+
+        public CSSRepository(CSSContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<Software> ExtendSoftwareLicenceDateAsync(string accountId, Software software)
+        public async Task<Software> CancelAccountSoftwareAsync(string accountId, string softwareId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var software = await _context.Software.FirstOrDefaultAsync(x => x.AccountRefId == accountId && x.SoftwareId == softwareId);
+                software.IsCancelled = false;
+                var updatedEntry = _context.Software.Attach(software).Entity;
+                _context.Entry(software).State = EntityState.Modified;
+                Save();
+
+                return new Software(
+                            software.SoftwareId,
+                            software.SoftwareName,
+                            software.Quantity,
+                            software.Price,
+                            software.EndDate,
+                            software.IsCancelled);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public Task<Account> GetAccountByIdAsync(string accountId)
+        public async Task<Software> ExtendSoftwareLicenceDateAsync(string accountId, string softwareId, DateTime newEndDate)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var software = await _context.Software.FirstOrDefaultAsync(x => x.AccountRefId == accountId && x.SoftwareId == softwareId);
+
+                software.EndDate = newEndDate;
+                var updatedEntry = _context.Software.Attach(software).Entity;
+                _context.Entry(software).State = EntityState.Modified;
+                Save();
+
+                return new Software(
+                            software.SoftwareId,
+                            software.SoftwareName,
+                            software.Quantity,
+                            software.Price,
+                            software.EndDate,
+                            software.IsCancelled);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public Task<IEnumerable<Account>> GetAllAccountsAsync()
+        public async Task<Account> GetAccountByIdAsync(string accountId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var account = await _context.Account.FirstOrDefaultAsync(x => x.AccountId == accountId);
+
+                return new Account(account.AccountId, account.AccountName);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
         }
 
-        public Task<IEnumerable<Software>> GetAllAccountSoftwaresAsync(string accountId)
+        public async Task<IEnumerable<Account>> GetAllAccountsAsync()
         {
-            throw new NotImplementedException();
+            var accounts = await _context.Account.ToListAsync();
+            var listToReturn = new List<Account>();
+
+            if (accounts.Any())
+            {
+                foreach (var account in accounts)
+                {
+                    listToReturn.Add(new Account(account.AccountId, account.AccountName));
+                }
+            }
+
+            return listToReturn;
         }
 
-        public Task SavePurchasedSoftwareByAccountAsync(string accountId, Software software)
+        public async Task<IEnumerable<Software>> GetAllAccountSoftwaresAsync(string accountId)
         {
-            throw new NotImplementedException();
+            var softwares = await _context.Software.Where(x => x.AccountRefId == accountId).ToListAsync();
+
+            var softwaresToReturn = new List<Software>();
+
+            if (softwares.Any())
+            {
+                foreach (var software in softwares)
+                {
+                    softwaresToReturn.Add(
+                        new Software(
+                            software.SoftwareId,
+                            software.SoftwareName,
+                            software.Quantity,
+                            software.Price,
+                            software.EndDate,
+                            software.IsCancelled
+                            ));
+                }
+            }
+
+            return softwaresToReturn;
         }
 
-        public Task UpdateServiceQuantityAsync(int quantityToUpdate)
+        public async Task<Account> InsertNewAccount(Account account)
         {
-            throw new NotImplementedException();
+            var accountDto = new AccountDto(account.AccountId, account.AccountName);
+            _context.Account.Add(accountDto);
+            Save();
+
+            return await Task.FromResult(account);
+        }
+
+        public async Task<Software> InsertNewAccountSoftware(string accountId, Software software)
+        {
+            var softwareDto = new SoftwareDto(
+                    software.SoftwareId,
+                    software.SoftwareName,
+                    software.Quantity,
+                    software.Price,
+                    software.EndDate,
+                    software.IsCancelled,
+                    accountId
+                    );
+            _context.Software.Add(softwareDto);
+            Save();
+
+            return await Task.FromResult(software);
+        }
+
+        public async Task SavePurchasedSoftwareByAccountAsync(string accountId, Software software)
+        {
+            var account = await _context.Account.FirstOrDefaultAsync(x => x.AccountId == accountId);
+
+            if (account != null)
+            {
+                var softwareToInsert = new SoftwareDto(
+                    software.SoftwareId,
+                    software.SoftwareName,
+                    software.Quantity,
+                    software.Price,
+                    software.EndDate,
+                    software.IsCancelled,
+                    accountId
+                    );
+
+                _context.Software.Add(softwareToInsert);
+                Save();
+            }
+        }
+
+        public async Task UpdateServiceQuantityAsync(string softwareId, int quantityToUpdate)
+        {
+            var software = await _context.Software.FirstOrDefaultAsync(x => x.SoftwareId == softwareId);
+
+            if (software != null)
+            {
+                software.Quantity = quantityToUpdate;
+                var updatedEntry = _context.Software.Attach(software).Entity;
+                _context.Entry(software).State = EntityState.Modified;
+                Save();
+            }
+        }
+
+        private void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }
