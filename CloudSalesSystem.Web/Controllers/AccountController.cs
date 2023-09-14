@@ -1,4 +1,6 @@
-﻿using CloudSalesSystem.Shared.Models;
+﻿using CloudSalesSystem.Business;
+using CloudSalesSystem.Business.Interfaces;
+using CloudSalesSystem.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CloudSalesSystem.Controllers
@@ -7,45 +9,61 @@ namespace CloudSalesSystem.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        public AccountController()
+        private readonly ICSSService _cSSService;
+
+        public AccountController(ICSSService cSSService)
         {
-            
+            _cSSService = cSSService;
         }
 
         [HttpGet("getAllAccounts")]
         public async Task<ActionResult<IEnumerable<Account>>> GetAllAccountsAsync()
         {
-            return Ok();
+            return Ok(await _cSSService.GetAllAccountsAsync());
         }
 
         [HttpGet("getAllPurchasedSoftwares")]
-        public async Task<ActionResult<IEnumerable<Software>>> GetAllPurchasedSoftwaresAsync()
+        public async Task<ActionResult<IEnumerable<Software>>> GetAllPurchasedSoftwaresAsync(string accountId)
         {
-            return Ok();
+            return Ok(await _cSSService.GetAllPurchasedSoftwaresAsync(accountId));
         }
 
         [HttpPost("createNewAccount")]
         public async Task<ActionResult<Account>> CreateNewAccount([FromBody] Account account)
         {
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(await _cSSService.InsertNewAccountAsync(account));
         }
 
         [HttpPost("createNewAccountSoftware")]
         public async Task<ActionResult<Software>> CreateNewAccountSoftware(string accountId, [FromBody] Software software)
         {
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(await _cSSService.InsertNewAccountSoftwareAsync(accountId, software));
         }
 
         [HttpPut("extendSoftwareLicence")]
-        public async Task<ActionResult<Software>> ExtendSoftwareLicence(string softwareId, DateTime extendedDate)
+        public async Task<ActionResult<Software>> ExtendSoftwareLicence(string accountId, string softwareName, DateTime extendedDate)
         {
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _cSSService.ExtendSoftwareLicenceAsync(accountId, softwareName, extendedDate);
+            return Accepted("Software have been extended sucessfully", result);
         }
 
         [HttpDelete("cancelAccountSoftware")]
         public async Task<IActionResult> CancelAccountSoftwareById(string accountId, string softwareId)
         {
-            return Ok();
+            var result = await _cSSService.CancelAccountSoftwareByIdAsnyc(accountId, softwareId);
+            return Accepted("Software have been cancelled sucessfully", result);
         }
     }
 }

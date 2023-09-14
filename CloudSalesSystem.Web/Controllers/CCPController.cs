@@ -1,4 +1,5 @@
-﻿using CloudSalesSystem.Shared.Models;
+﻿using CloudSalesSystem.Business.Interfaces;
+using CloudSalesSystem.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CloudSalesSystem.Controllers
@@ -7,21 +8,28 @@ namespace CloudSalesSystem.Controllers
     [ApiController]
     public class CCPController : ControllerBase
     {
-        public CCPController()
+        private readonly ICSSService _cSSService;
+        public CCPController(ICSSService cSSService)
         {
-            
+            _cSSService = cSSService;
         }
 
         [HttpGet("getAllAvailableSoftwares")]
         public async Task<ActionResult<IEnumerable<Software>>> GetAllAvailableSoftwaresAsync()
         {
-            return Ok();
+            return Ok(await _cSSService.GetAllAvailableSoftwaresAsync());
         }
 
         [HttpPut("changeServiceQuantity")]
-        public async Task<IActionResult> ChangeServiceQuantity(int quantity, string subscriptionId, string softwareId)
+        public async Task<ActionResult<Software>> ChangeServiceQuantity(int quantity, string accountId, string softwareId)
         {
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _cSSService.ChangeServiceQuantityAsync(softwareId, accountId, quantity);
+            return Ok(result);
+
         }
     }
 }
