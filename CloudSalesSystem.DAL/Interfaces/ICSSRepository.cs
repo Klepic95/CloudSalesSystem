@@ -8,9 +8,9 @@ namespace CloudSalesSystem.DAL.Interfaces
         Task<Account> GetAccountByIdAsync(string accountId);
         Task SavePurchasedSoftwareByAccountAsync(string accountId, Software software);
         Task<IEnumerable<Software>> GetAllAccountSoftwaresAsync(string accountId);
-        Task UpdateServiceQuantityAsync(string softwareId, int quantityToUpdate);
+        Task<Software> UpdateServiceQuantityAsync(string softwareId, string accountId, int quantity);
         Task<Software> CancelAccountSoftwareAsync(string accountId, string softwareId);
-        Task<Software> ExtendSoftwareLicenceDateAsync(string accountId, string softwareId, DateTime newEndDate);
+        Task<Software> ExtendSoftwareLicenceDateAsync(string accountId, Software software, DateTime newEndDate);
         Task<Software> InsertNewAccountSoftwareAsync(string accountId, Software software);
         Task<Account> InsertNewAccountAsync(Account account);
     }

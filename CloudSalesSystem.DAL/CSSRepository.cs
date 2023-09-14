@@ -38,24 +38,24 @@ namespace CloudSalesSystem.DAL
             }
         }
 
-        public async Task<Software> ExtendSoftwareLicenceDateAsync(string accountId, string softwareId, DateTime newEndDate)
+        public async Task<Software> ExtendSoftwareLicenceDateAsync(string accountId, Software software, DateTime newEndDate)
         {
             try
             {
-                var software = await _context.Software.FirstOrDefaultAsync(x => x.AccountRefId == accountId && x.SoftwareId == softwareId);
+                var currentSoftware = await _context.Software.FirstOrDefaultAsync(x => x.AccountRefId == accountId && x.SoftwareId == software.SoftwareId);
 
-                software.EndDate = newEndDate;
-                var updatedEntry = _context.Software.Attach(software).Entity;
-                _context.Entry(software).State = EntityState.Modified;
+                currentSoftware.EndDate = newEndDate;
+                var updatedEntry = _context.Software.Attach(currentSoftware).Entity;
+                _context.Entry(currentSoftware).State = EntityState.Modified;
                 Save();
 
                 return new Software(
-                            software.SoftwareId,
-                            software.SoftwareName,
-                            software.Quantity,
-                            software.Price,
-                            software.EndDate,
-                            software.IsCancelled);
+                            currentSoftware.SoftwareId,
+                            currentSoftware.SoftwareName,
+                            currentSoftware.Quantity,
+                            currentSoftware.Price,
+                            currentSoftware.EndDate,
+                            currentSoftware.IsCancelled);
 
             }
             catch (Exception)
@@ -167,16 +167,28 @@ namespace CloudSalesSystem.DAL
             }
         }
 
-        public async Task UpdateServiceQuantityAsync(string softwareId, int quantityToUpdate)
+        public async Task<Software> UpdateServiceQuantityAsync(string softwareId, string accountId, int quantity)
         {
-            var software = await _context.Software.FirstOrDefaultAsync(x => x.SoftwareId == softwareId);
-
-            if (software != null)
+            try
             {
-                software.Quantity = quantityToUpdate;
+                var software = await _context.Software.FirstOrDefaultAsync(x => x.SoftwareId == softwareId);
+
+                software.Quantity = quantity;
                 var updatedEntry = _context.Software.Attach(software).Entity;
                 _context.Entry(software).State = EntityState.Modified;
                 Save();
+
+                return new Software(
+                                software.SoftwareId,
+                                software.SoftwareName,
+                                software.Quantity,
+                                software.Price,
+                                software.EndDate,
+                                software.IsCancelled);
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

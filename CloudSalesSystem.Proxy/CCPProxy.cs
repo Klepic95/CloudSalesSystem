@@ -11,16 +11,19 @@ namespace CloudSalesSystem.Proxy
              // Since CCPProxy is mocked, this method would actually not do anything here
         }
 
-        public async Task<Software> ChangeServiceQuantityAsync(Software software, int quantity)
+        public async Task<Software> ChangeServiceQuantityAsync(string softwareId, string accountId, int quantity)
         {
+            var software = await GetSoftwareByIdAsync(softwareId);
+            // In real service update quanity based on specific account
             software.Quantity = quantity;
             return await Task.FromResult(software);
         }
 
-        public async Task<Software> ExtendSoftwareLicenceAsync(string accountId, Software software, DateTime endDate)
+        public async Task<Software> ExtendSoftwareLicenceAsync(string accountId, string softwareName, DateTime endDate)
         {
             try
             {
+                var software = await GetSoftwareByNameAsync(softwareName);
                 if (software.EndDate < endDate)
                 {
                     // Based on accoutId it will update date on CCP side
@@ -30,13 +33,12 @@ namespace CloudSalesSystem.Proxy
                 {
                     throw new Exception("Provided date is less than current end date!");
                 }
+                return await Task.FromResult(software);
             }
             catch (Exception e)
             {
                 throw;
             }
-
-            return await Task.FromResult(software);
         }
 
         public async Task<IEnumerable<Software>> GetAllAvailableSoftwaresAsync()
@@ -72,8 +74,14 @@ namespace CloudSalesSystem.Proxy
             return await Task.FromResult(software);
         }
 
-        public async Task<Software> OrderSoftwareAsync(Software software)
+        public async Task InsertNewSoftwareForAccountAsync(string accountId, Software software)
         {
+            // This method is reponsible for creating/buying a software for specific account
+        }
+
+        public async Task<Software> OrderSoftwareAsync(string softwareName)
+        {
+            Software software = await GetSoftwareByNameAsync(softwareName);
             return await Task.FromResult(software);
         }
 

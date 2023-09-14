@@ -18,47 +18,54 @@ namespace CloudSalesSystem.Business
 
         public async Task<Software> CancelAccountSoftwareByIdAsnyc(string accountId, string softwareId)
         {
-            throw new NotImplementedException();
+            await _proxy.CancelAccountSoftwareAsync(accountId, softwareId);
+            return await _repository.CancelAccountSoftwareAsync(accountId, softwareId);
+            
         }
 
-        public Task ChangeServiceQuantityAsync(string softwareId, int quantity)
+        public async Task<Software> ChangeServiceQuantityAsync(string softwareId, string accountId, int quantity)
         {
-            throw new NotImplementedException();
+            await _proxy.ChangeServiceQuantityAsync(softwareId, accountId, quantity);
+            return await _repository.UpdateServiceQuantityAsync(softwareId, accountId, quantity);
         }
 
-        public Task<Software> ExtendSoftwareLicenceAsync(string accountId, string softwareName, DateTime extendedDate)
+        public async Task<Software> ExtendSoftwareLicenceAsync(string accountId, string softwareName, DateTime extendedDate)
         {
-            throw new NotImplementedException();
+            var software = await _proxy.ExtendSoftwareLicenceAsync(accountId, softwareName, extendedDate);
+            return await _repository.ExtendSoftwareLicenceDateAsync(accountId, software, extendedDate);
         }
 
-        public Task<IEnumerable<Account>> GetAllAccountsAsync()
+        public async Task<IEnumerable<Account>> GetAllAccountsAsync()
         {
-            throw new NotImplementedException();
+            return await _repository.GetAllAccountsAsync();
         }
 
-        public Task<IEnumerable<Software>> GetAllAvailableSoftwaresAsync()
+        public async Task<IEnumerable<Software>> GetAllAvailableSoftwaresAsync()
         {
-            throw new NotImplementedException();
+            return await _proxy.GetAllAvailableSoftwaresAsync();
         }
 
-        public Task<IEnumerable<Software>> GetAllPurchasedSoftwaresAsync(string accountId)
+        public async Task<IEnumerable<Software>> GetAllPurchasedSoftwaresAsync(string accountId)
         {
-            throw new NotImplementedException();
+            return await _repository.GetAllAccountSoftwaresAsync(accountId);
         }
 
-        public Task<Account> InsertNewAccountAsync(string accountName)
+        public async Task<Account> InsertNewAccountAsync(Account account)
         {
-            throw new NotImplementedException();
+            return await _repository.InsertNewAccountAsync(account);
         }
 
-        public Task<Software> InsertNewAccountSoftwareAsync(string accountId, string softwareName)
+        public async Task<Software> InsertNewAccountSoftwareAsync(string accountId, Software software)
         {
-            throw new NotImplementedException();
+            await _proxy.InsertNewSoftwareForAccountAsync(accountId, software);
+            return await _repository.InsertNewAccountSoftwareAsync(accountId, software);
         }
 
-        public Task<Software> OrderSoftwareAsync(string accountId, string softwareName)
+        public async Task<Software> OrderSoftwareAsync(string accountId, string softwareName)
         {
-            throw new NotImplementedException();
+            var software = await _proxy.OrderSoftwareAsync(softwareName);
+            await _repository.SavePurchasedSoftwareByAccountAsync(accountId, software);
+            return software;
         }
     }
 }
