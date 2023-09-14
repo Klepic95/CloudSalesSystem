@@ -39,7 +39,7 @@ namespace CloudSalesSystem.DAL
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder()
             {
-                DataSource = "localhost,1434",
+                DataSource = "localhost,1433",
                 UserID = "sa",
                 Password = "cssPass1!",
                 TrustServerCertificate = true,
