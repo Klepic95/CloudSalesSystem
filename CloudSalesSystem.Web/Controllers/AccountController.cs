@@ -1,4 +1,4 @@
-﻿using CloudSalesSystem.Business.Models;
+﻿using CloudSalesSystem.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CloudSalesSystem.Controllers

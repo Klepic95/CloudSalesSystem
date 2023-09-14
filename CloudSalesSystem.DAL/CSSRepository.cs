@@ -1,12 +1,7 @@
-﻿using CloudSalesSystem.Business.Models;
-using CloudSalesSystem.DAL.DTOs;
+﻿using CloudSalesSystem.DAL.DTOs;
 using CloudSalesSystem.DAL.Interfaces;
+using CloudSalesSystem.Shared.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CloudSalesSystem.DAL
 {

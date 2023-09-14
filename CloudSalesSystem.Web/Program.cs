@@ -5,7 +5,6 @@ using CloudSalesSystem.DAL.Interfaces;
 using CloudSalesSystem.Proxy;
 using CloudSalesSystem.Proxy.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 

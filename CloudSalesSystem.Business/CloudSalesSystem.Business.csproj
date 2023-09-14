@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CloudSalesSystem.DAL\CloudSalesSystem.DAL.csproj" />
+    <ProjectReference Include="..\CloudSalesSystem.Proxy\CloudSalesSystem.Proxy.csproj" />
+  </ItemGroup>
+
 </Project>

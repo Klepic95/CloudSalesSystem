@@ -1,4 +1,4 @@
-﻿using CloudSalesSystem.Business.Models;
+﻿using CloudSalesSystem.Shared.Models;
 
 namespace CloudSalesSystem.Proxy.Interfaces
 {

@@ -18,11 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CloudSalesSystem.Business\CloudSalesSystem.Business.csproj" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <ProjectReference Include="..\CloudSalesSystem.Shared\CloudSalesSystem.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace CloudSalesSystem.Business.Models
+﻿namespace CloudSalesSystem.Shared.Models
 {
     public class Software
     {

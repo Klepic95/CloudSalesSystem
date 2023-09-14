@@ -1,10 +1,5 @@
-﻿using CloudSalesSystem.Business.Models;
-using CloudSalesSystem.Proxy.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CloudSalesSystem.Proxy.Interfaces;
+using CloudSalesSystem.Shared.Models;
 
 namespace CloudSalesSystem.Proxy
 {
