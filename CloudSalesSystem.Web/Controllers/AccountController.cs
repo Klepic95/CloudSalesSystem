@@ -12,25 +12,25 @@ namespace CloudSalesSystem.Controllers
             
         }
 
-        [HttpGet]
+        [HttpGet("getAllAccounts")]
         public async Task<ActionResult<IEnumerable<Account>>> GetAllAccountsAsync()
         {
             return Ok();
         }
 
-        [HttpGet]
+        [HttpGet("getAllPurchasedSoftwares")]
         public async Task<ActionResult<IEnumerable<Software>>> GetAllPurchasedSoftwaresAsync()
         {
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut("extendSoftwareLicence")]
         public async Task<ActionResult<Software>> ExtendSoftwareLicence(string softwareId, DateTime extendedDate)
         {
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("cancelAccountSoftware")]
         public async Task<IActionResult> CancelAccountSoftwareById(string accountId, string softwareId)
         {
             return Ok();

@@ -12,13 +12,13 @@ namespace CloudSalesSystem.Controllers
             
         }
 
-        [HttpGet]
+        [HttpGet("getAllAvailableSoftwares")]
         public async Task<ActionResult<IEnumerable<Software>>> GetAllAvailableSoftwaresAsync()
         {
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("changeServiceQuantity")]
         public async Task<IActionResult> ChangeServiceQuantity(int quantity, string subscriptionId, string softwareId)
         {
             return Ok();
