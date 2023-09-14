@@ -5,6 +5,7 @@ namespace CloudSalesSystem.Proxy.Interfaces
     public interface ICCPProxy
     {
         Task<IEnumerable<Software>> GetAllAvailableSoftwaresAsync();
+        Task<Software> GetSoftwareByIdAsync(string softwareId);
         Task<Software> OrderSoftwareAsync(Software software);
         Task<Software> ChangeServiceQuantityAsync(Software software, int quantity);
         Task CancelAccountSoftwareAsync(string accountId, string softwareId);

@@ -13,7 +13,7 @@ namespace CloudSalesSystem.Proxy
     {
         public async Task CancelAccountSoftwareAsync(string accountId, string softwareId)
         {
-             
+             // Since CCPProxy is mocked, this method would actually not do anything here
         }
 
         public async Task<Software> ChangeServiceQuantityAsync(Software software, int quantity)
@@ -46,7 +46,31 @@ namespace CloudSalesSystem.Proxy
 
         public async Task<IEnumerable<Software>> GetAllAvailableSoftwaresAsync()
         {
-            var softwares = new List<Software>()
+            return await Task.FromResult(GetSoftwares());
+        }
+
+        public async Task<Software> GetSoftwareByIdAsync(string softwareId)
+        {
+            Software software;
+            try
+            {
+                software = GetSoftwares().FirstOrDefault(x => x.SoftwareId == softwareId);
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            return await Task.FromResult(software);
+        }
+
+        public async Task<Software> OrderSoftwareAsync(Software software)
+        {
+            return await Task.FromResult(software);
+        }
+
+        private IEnumerable<Software> GetSoftwares()
+        {
+            return new List<Software>()
             {
                 new Software() { SoftwareId = "12345", SoftwareName= "Microsoft Office", EndDate = DateTime.MaxValue, Price = 15.00, Quantity = 1, IsCancelled = false },
                 new Software() { SoftwareId = "12346", SoftwareName= "Music Player", EndDate = DateTime.MaxValue, Price = 4.70, Quantity = 1, IsCancelled = false },
@@ -55,14 +79,6 @@ namespace CloudSalesSystem.Proxy
                 new Software() { SoftwareId = "12349", SoftwareName= "Virtual Machine", EndDate = DateTime.MaxValue, Price = 30.00, Quantity = 1, IsCancelled = false },
                 new Software() { SoftwareId = "123410", SoftwareName= "Picture Editor", EndDate = DateTime.MaxValue, Price = 7.50, Quantity = 1, IsCancelled = false },
             };
-
-
-            return await Task.FromResult(softwares);
-        }
-
-        public async Task<Software> OrderSoftwareAsync(Software software)
-        {
-            return await Task.FromResult(software);
         }
     }
 }
