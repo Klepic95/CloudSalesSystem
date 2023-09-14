@@ -29,23 +29,23 @@ namespace CloudSalesSystem.Controllers
         }
 
         [HttpPost("createNewAccount")]
-        public async Task<ActionResult<Account>> CreateNewAccount([FromBody] Account account)
+        public async Task<ActionResult<Account>> CreateNewAccount(string accountName)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            return Ok(await _cSSService.InsertNewAccountAsync(account));
+            return Ok(await _cSSService.InsertNewAccountAsync(accountName));
         }
 
         [HttpPost("createNewAccountSoftware")]
-        public async Task<ActionResult<Software>> CreateNewAccountSoftware(string accountId, [FromBody] Software software)
+        public async Task<ActionResult<Software>> CreateNewAccountSoftware(string accountId, string softwareName)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            return Ok(await _cSSService.InsertNewAccountSoftwareAsync(accountId, software));
+            return Ok(await _cSSService.InsertNewAccountSoftwareAsync(accountId, softwareName));
         }
 
         [HttpPut("extendSoftwareLicence")]

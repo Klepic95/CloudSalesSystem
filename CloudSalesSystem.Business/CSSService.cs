@@ -50,14 +50,14 @@ namespace CloudSalesSystem.Business
             return await _repository.GetAllAccountSoftwaresAsync(accountId);
         }
 
-        public async Task<Account> InsertNewAccountAsync(Account account)
+        public async Task<Account> InsertNewAccountAsync(string accountName)
         {
-            return await _repository.InsertNewAccountAsync(account);
+            return await _repository.InsertNewAccountAsync(accountName);
         }
 
-        public async Task<Software> InsertNewAccountSoftwareAsync(string accountId, Software software)
+        public async Task<Software> InsertNewAccountSoftwareAsync(string accountId, string softwareName)
         {
-            await _proxy.InsertNewSoftwareForAccountAsync(accountId, software);
+            var software = await _proxy.InsertNewSoftwareForAccountAsync(accountId, softwareName);
             return await _repository.InsertNewAccountSoftwareAsync(accountId, software);
         }
 

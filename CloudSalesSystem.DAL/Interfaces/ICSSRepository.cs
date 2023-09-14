@@ -12,6 +12,6 @@ namespace CloudSalesSystem.DAL.Interfaces
         Task<Software> CancelAccountSoftwareAsync(string accountId, string softwareId);
         Task<Software> ExtendSoftwareLicenceDateAsync(string accountId, Software software, DateTime newEndDate);
         Task<Software> InsertNewAccountSoftwareAsync(string accountId, Software software);
-        Task<Account> InsertNewAccountAsync(Account account);
+        Task<Account> InsertNewAccountAsync(string accountName);
     }
 }

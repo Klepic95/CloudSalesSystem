@@ -15,38 +15,34 @@ namespace CloudSalesSystem.DAL.Migrations
                 name: "Account",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccountId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AccountName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Account", x => x.Id);
+                    table.PrimaryKey("PK_Account", x => x.AccountId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Software",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SoftwareId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SoftwareId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SoftwareName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsCancelled = table.Column<bool>(type: "bit", nullable: false),
-                    AccountRefId = table.Column<int>(type: "int", nullable: false)
+                    AccountRefId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Software", x => x.Id);
+                    table.PrimaryKey("PK_Software", x => x.SoftwareId);
                     table.ForeignKey(
                         name: "FK_Software_Account_AccountRefId",
                         column: x => x.AccountRefId,
                         principalTable: "Account",
-                        principalColumn: "Id",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Cascade);
                 });
 

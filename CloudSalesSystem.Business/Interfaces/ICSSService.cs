@@ -11,7 +11,7 @@ namespace CloudSalesSystem.Business.Interfaces
         Task<Software> ChangeServiceQuantityAsync(string softwareId, string accountId, int quantity);
         Task<Software> CancelAccountSoftwareByIdAsnyc(string accountId, string softwareId);
         Task<Software> ExtendSoftwareLicenceAsync(string accountId, string softwareName, DateTime extendedDate);
-        Task<Account> InsertNewAccountAsync(Account account);
-        Task<Software> InsertNewAccountSoftwareAsync(string accountId, Software software);
+        Task<Account> InsertNewAccountAsync(string account);
+        Task<Software> InsertNewAccountSoftwareAsync(string accountId, string softwareName);
     }
 }

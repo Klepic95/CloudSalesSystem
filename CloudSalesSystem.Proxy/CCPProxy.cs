@@ -74,9 +74,18 @@ namespace CloudSalesSystem.Proxy
             return await Task.FromResult(software);
         }
 
-        public async Task InsertNewSoftwareForAccountAsync(string accountId, Software software)
+        public async Task<Software> InsertNewSoftwareForAccountAsync(string accountId, string softwareName)
         {
             // This method is reponsible for creating/buying a software for specific account
+            // Only neccessary logic is implemented right now, where other is mocked
+            try
+            {
+                return await GetSoftwareByNameAsync(softwareName);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<Software> OrderSoftwareAsync(string softwareName)
@@ -89,12 +98,12 @@ namespace CloudSalesSystem.Proxy
         {
             return new List<Software>()
             {
-                new Software() { SoftwareId = "12345", SoftwareName= "Microsoft Office", EndDate = DateTime.MaxValue, Price = 15.00, Quantity = 1, IsCancelled = false },
-                new Software() { SoftwareId = "12346", SoftwareName= "Music Player", EndDate = DateTime.MaxValue, Price = 4.70, Quantity = 1, IsCancelled = false },
-                new Software() { SoftwareId = "12347", SoftwareName= "Microsoft AI", EndDate = DateTime.MaxValue, Price = 20.00, Quantity = 1, IsCancelled = false },
-                new Software() { SoftwareId = "12348", SoftwareName= "Cloud Storage", EndDate = DateTime.MaxValue, Price = 25.00, Quantity = 1, IsCancelled = false },
-                new Software() { SoftwareId = "12349", SoftwareName= "Virtual Machine", EndDate = DateTime.MaxValue, Price = 30.00, Quantity = 1, IsCancelled = false },
-                new Software() { SoftwareId = "123410", SoftwareName= "Picture Editor", EndDate = DateTime.MaxValue, Price = 7.50, Quantity = 1, IsCancelled = false },
+                new Software() { SoftwareId = "12345", SoftwareName= "Microsoft Office", EndDate = DateTime.UtcNow.AddMonths(6), Price = 15.00, Quantity = 1, IsCancelled = false },
+                new Software() { SoftwareId = "12346", SoftwareName= "Music Player", EndDate = DateTime.UtcNow.AddMonths(6), Price = 4.70, Quantity = 1, IsCancelled = false },
+                new Software() { SoftwareId = "12347", SoftwareName= "Microsoft AI", EndDate = DateTime.UtcNow.AddMonths(6), Price = 20.00, Quantity = 1, IsCancelled = false },
+                new Software() { SoftwareId = "12348", SoftwareName= "Cloud Storage", EndDate = DateTime.UtcNow.AddMonths(6), Price = 25.00, Quantity = 1, IsCancelled = false },
+                new Software() { SoftwareId = "12349", SoftwareName= "Virtual Machine", EndDate = DateTime.UtcNow.AddMonths(6), Price = 30.00, Quantity = 1, IsCancelled = false },
+                new Software() { SoftwareId = "123410", SoftwareName= "Picture Editor", EndDate = DateTime.UtcNow.AddMonths(6), Price = 7.50, Quantity = 1, IsCancelled = false },
             };
         }
     }

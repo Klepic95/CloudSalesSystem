@@ -11,6 +11,6 @@ namespace CloudSalesSystem.Proxy.Interfaces
         Task<Software> ChangeServiceQuantityAsync(string softwareId, string accountId, int quantity);
         Task CancelAccountSoftwareAsync(string accountId, string softwareId);
         Task<Software> ExtendSoftwareLicenceAsync(string accountId, string softwareName, DateTime endDate);
-        Task InsertNewSoftwareForAccountAsync(string accountId, Software software);
+        Task<Software> InsertNewSoftwareForAccountAsync(string accountId, string softwareName);
     }
 }

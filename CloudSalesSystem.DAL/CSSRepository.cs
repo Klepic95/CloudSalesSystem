@@ -120,13 +120,21 @@ namespace CloudSalesSystem.DAL
             return softwaresToReturn;
         }
 
-        public async Task<Account> InsertNewAccountAsync(Account account)
+        public async Task<Account> InsertNewAccountAsync(string accountName)
         {
-            var accountDto = new AccountDto(account.AccountId, account.AccountName);
-            _context.Account.Add(accountDto);
-            Save();
-
-            return await Task.FromResult(account);
+            var isAccountNameTaken = await _context.Account.AnyAsync(x => x.AccountName == accountName);
+            if (!isAccountNameTaken) 
+            {
+                var account = new Account(Guid.NewGuid().ToString(), accountName);
+                var accountDto = new AccountDto(account.AccountId, account.AccountName);
+                _context.Account.Add(accountDto);
+                Save();
+                return account;
+            }
+            else
+            {
+                throw new Exception("Account with the same name already exists");
+            }
         }
 
         public async Task<Software> InsertNewAccountSoftwareAsync(string accountId, Software software)
