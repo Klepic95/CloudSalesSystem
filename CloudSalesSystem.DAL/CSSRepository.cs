@@ -14,23 +14,23 @@ namespace CloudSalesSystem.DAL
             _context = context;
         }
 
-        public async Task<Software> CancelAccountSoftwareAsync(string accountId, string softwareId)
+        public async Task<Software> CancelAccountSoftwareAsync(string accountId, Software software)
         {
             try
             {
-                var software = await _context.Software.FirstOrDefaultAsync(x => x.AccountRefId == accountId && x.SoftwareId == softwareId);
-                software.IsCancelled = false;
-                var updatedEntry = _context.Software.Attach(software).Entity;
-                _context.Entry(software).State = EntityState.Modified;
+                var softwareDto = await _context.Software.FirstOrDefaultAsync(x => x.AccountRefId == accountId && x.SoftwareId == software.SoftwareId);
+                softwareDto.IsCancelled = false;
+                var updatedEntry = _context.Software.Attach(softwareDto).Entity;
+                _context.Entry(softwareDto).State = EntityState.Modified;
                 Save();
 
                 return new Software(
-                            software.SoftwareId,
-                            software.SoftwareName,
-                            software.Quantity,
-                            software.Price,
-                            software.EndDate,
-                            software.IsCancelled);
+                            softwareDto.SoftwareId,
+                            softwareDto.SoftwareName,
+                            softwareDto.Quantity,
+                            softwareDto.Price,
+                            softwareDto.EndDate,
+                            softwareDto.IsCancelled);
             }
             catch (Exception)
             {
@@ -75,8 +75,7 @@ namespace CloudSalesSystem.DAL
             catch (Exception)
             {
                 throw;
-            }
-            
+            }   
         }
 
         public async Task<IEnumerable<Account>> GetAllAccountsAsync()
@@ -120,6 +119,27 @@ namespace CloudSalesSystem.DAL
             return softwaresToReturn;
         }
 
+        public async Task<Software> GetSoftwareByCSSSoftwareIdAsync(int cssSoftwareId)
+        {
+            try
+            {
+                var softwareDto = await _context.Software.FirstOrDefaultAsync(x => x.Id == cssSoftwareId);
+
+                return new Software(
+                    softwareDto.SoftwareId,
+                    softwareDto.SoftwareName,
+                    softwareDto.Quantity,
+                    softwareDto.Price,
+                    softwareDto.EndDate,
+                    softwareDto.IsCancelled
+                    );
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<Account> InsertNewAccountAsync(string accountName)
         {
             var isAccountNameTaken = await _context.Account.AnyAsync(x => x.AccountName == accountName);
@@ -137,28 +157,12 @@ namespace CloudSalesSystem.DAL
             }
         }
 
-        public async Task<Software> InsertNewAccountSoftwareAsync(string accountId, Software software)
-        {
-            var softwareDto = new SoftwareDto(
-                    software.SoftwareId,
-                    software.SoftwareName,
-                    software.Quantity,
-                    software.Price,
-                    software.EndDate,
-                    software.IsCancelled,
-                    accountId
-                    );
-            _context.Software.Add(softwareDto);
-            Save();
-
-            return await Task.FromResult(software);
-        }
-
         public async Task SavePurchasedSoftwareByAccountAsync(string accountId, Software software)
         {
             var account = await _context.Account.FirstOrDefaultAsync(x => x.AccountId == accountId);
+            var softwareDto = await _context.Software.FirstOrDefaultAsync(x => x.AccountRefId == accountId && x.SoftwareId == software.SoftwareId);
 
-            if (account != null)
+            if (account != null && softwareDto == null)
             {
                 var softwareToInsert = new SoftwareDto(
                     software.SoftwareId,
@@ -173,26 +177,37 @@ namespace CloudSalesSystem.DAL
                 _context.Software.Add(softwareToInsert);
                 Save();
             }
+            else if(account != null && softwareDto != null)
+            {
+                softwareDto.Quantity = softwareDto.Quantity + 1;
+                var updatedEntry = _context.Software.Attach(softwareDto).Entity;
+                _context.Entry(softwareDto).State = EntityState.Modified;
+                Save();
+            }
+            else 
+            { 
+                throw new Exception("Specified Account does not exist"); 
+            }
         }
 
-        public async Task<Software> UpdateServiceQuantityAsync(string softwareId, string accountId, int quantity)
+        public async Task<Software> UpdateServiceQuantityAsync(string accountId, Software sofware, int quantity)
         {
             try
             {
-                var software = await _context.Software.FirstOrDefaultAsync(x => x.SoftwareId == softwareId);
+                var softwareDto = await _context.Software.FirstOrDefaultAsync(x => x.SoftwareId == sofware.SoftwareId && x.AccountRefId == accountId);
 
-                software.Quantity = quantity;
-                var updatedEntry = _context.Software.Attach(software).Entity;
-                _context.Entry(software).State = EntityState.Modified;
+                softwareDto.Quantity = quantity;
+                var updatedEntry = _context.Software.Attach(softwareDto).Entity;
+                _context.Entry(softwareDto).State = EntityState.Modified;
                 Save();
 
                 return new Software(
-                                software.SoftwareId,
-                                software.SoftwareName,
-                                software.Quantity,
-                                software.Price,
-                                software.EndDate,
-                                software.IsCancelled);
+                                softwareDto.SoftwareId,
+                                softwareDto.SoftwareName,
+                                softwareDto.Quantity,
+                                softwareDto.Price,
+                                softwareDto.EndDate,
+                                softwareDto.IsCancelled);
             }
             catch (Exception)
             {

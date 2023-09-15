@@ -7,6 +7,7 @@ namespace CloudSalesSystem.DAL.DTOs
     public class SoftwareDto
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         public string SoftwareId { get; set; }
         public string SoftwareName { get; set; }
         public int Quantity { get; set; }
@@ -38,7 +39,8 @@ namespace CloudSalesSystem.DAL.DTOs
     {
         public void Configure(EntityTypeBuilder<SoftwareDto> builder)
         {
-            builder.HasKey(x => x.SoftwareId);
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.SoftwareId).IsRequired();
             builder.Property(x => x.SoftwareName).IsRequired();
             builder.Property(x => x.EndDate).IsRequired();
             builder.Property(x => x.Quantity).IsRequired();

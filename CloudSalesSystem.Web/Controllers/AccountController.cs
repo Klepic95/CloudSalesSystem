@@ -17,13 +17,13 @@ namespace CloudSalesSystem.Controllers
         }
 
         [HttpGet("getAllAccounts")]
-        public async Task<ActionResult<IEnumerable<Account>>> GetAllAccountsAsync()
+        public async Task<ActionResult<IEnumerable<Account>>> GetAllAccounts()
         {
             return Ok(await _cSSService.GetAllAccountsAsync());
         }
 
         [HttpGet("getAllPurchasedSoftwares")]
-        public async Task<ActionResult<IEnumerable<Software>>> GetAllPurchasedSoftwaresAsync(string accountId)
+        public async Task<ActionResult<IEnumerable<Software>>> GetAllPurchasedSoftwares(string accountId)
         {
             return Ok(await _cSSService.GetAllPurchasedSoftwaresAsync(accountId));
         }
@@ -38,16 +38,6 @@ namespace CloudSalesSystem.Controllers
             return Ok(await _cSSService.InsertNewAccountAsync(accountName));
         }
 
-        [HttpPost("createNewAccountSoftware")]
-        public async Task<ActionResult<Software>> CreateNewAccountSoftware(string accountId, string softwareName)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            return Ok(await _cSSService.InsertNewAccountSoftwareAsync(accountId, softwareName));
-        }
-
         [HttpPut("extendSoftwareLicence")]
         public async Task<ActionResult<Software>> ExtendSoftwareLicence(string accountId, string softwareName, DateTime extendedDate)
         {
@@ -59,10 +49,22 @@ namespace CloudSalesSystem.Controllers
             return Accepted("Software have been extended sucessfully", result);
         }
 
-        [HttpDelete("cancelAccountSoftware")]
-        public async Task<IActionResult> CancelAccountSoftwareById(string accountId, string softwareId)
+        [HttpPut("changeServiceQuantity")]
+        public async Task<ActionResult<Software>> ChangeServiceQuantity(string accountId, string softwareName, int quantity)
         {
-            var result = await _cSSService.CancelAccountSoftwareByIdAsnyc(accountId, softwareId);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _cSSService.ChangeServiceQuantityAsync(accountId, softwareName, quantity);
+            return Ok(result);
+
+        }
+
+        [HttpDelete("cancelAccountSoftware")]
+        public async Task<IActionResult> CancelAccountSoftwareById(string accountId, string softwareName)
+        {
+            var result = await _cSSService.CancelAccountSoftwareByIdAsnyc(accountId, softwareName);
             return Accepted("Software have been cancelled sucessfully", result);
         }
     }

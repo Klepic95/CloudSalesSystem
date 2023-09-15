@@ -6,34 +6,50 @@ namespace CloudSalesSystem.Proxy
     // Implementation of CCPProxy is completely mocked
     public class CCPProxy : ICCPProxy
     {
-        public async Task CancelAccountSoftwareAsync(string accountId, string softwareId)
+        public async Task<Software> CancelAccountSoftwareAsync(string accountId, string softwareName)
         {
-             // Since CCPProxy is mocked, this method would actually not do anything here
+            // In real service this method would cancel subscription on CCP side based on the account id
+            try
+            {
+                return await GetSoftwareByNameAsync(softwareName);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public async Task<Software> ChangeServiceQuantityAsync(string softwareId, string accountId, int quantity)
+        public async Task<Software> ChangeServiceQuantityAsync(string accountId, string softwareName, int quantity)
         {
-            var software = await GetSoftwareByIdAsync(softwareId);
-            // In real service update quanity based on specific account
-            software.Quantity = quantity;
-            return await Task.FromResult(software);
+            try
+            {
+                var softwareToReturn = await GetSoftwareByNameAsync(softwareName);
+                // In real service update quanity based on specific account
+                softwareToReturn.Quantity = quantity;
+                return softwareToReturn;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
         }
 
         public async Task<Software> ExtendSoftwareLicenceAsync(string accountId, string softwareName, DateTime endDate)
         {
             try
             {
-                var software = await GetSoftwareByNameAsync(softwareName);
-                if (software.EndDate < endDate)
+                var softwareToReturn = await GetSoftwareByNameAsync(softwareName);
+                if (softwareToReturn.EndDate < endDate)
                 {
                     // Based on accoutId it will update date on CCP side
-                    software.EndDate = endDate;
+                    softwareToReturn.EndDate = endDate;
                 }
                 else
                 {
                     throw new Exception("Provided date is less than current end date!");
                 }
-                return await Task.FromResult(software);
+                return softwareToReturn;
             }
             catch (Exception e)
             {
@@ -74,7 +90,7 @@ namespace CloudSalesSystem.Proxy
             return await Task.FromResult(software);
         }
 
-        public async Task<Software> InsertNewSoftwareForAccountAsync(string accountId, string softwareName)
+        public async Task<Software> OrderSoftwareAsync(string softwareName)
         {
             // This method is reponsible for creating/buying a software for specific account
             // Only neccessary logic is implemented right now, where other is mocked
@@ -86,12 +102,6 @@ namespace CloudSalesSystem.Proxy
             {
                 throw;
             }
-        }
-
-        public async Task<Software> OrderSoftwareAsync(string softwareName)
-        {
-            Software software = await GetSoftwareByNameAsync(softwareName);
-            return await Task.FromResult(software);
         }
 
         private IEnumerable<Software> GetSoftwares()

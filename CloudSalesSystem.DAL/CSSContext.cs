@@ -1,35 +1,45 @@
 ﻿using CloudSalesSystem.DAL.DTOs;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace CloudSalesSystem.DAL
 {
     public class CSSContext : DbContext
     {
-        private IConfiguration _configuration;
         public DbSet<AccountDto> Account { get; set; }
         public DbSet<SoftwareDto> Software { get; set; }
 
-        public CSSContext(IConfiguration configuration)
+        public CSSContext()
         {
-            _configuration = configuration;
+            
         }
 
-        public CSSContext(IConfiguration configuration, DbContextOptions options): base(options)
+        public CSSContext(DbContextOptions options): base(options)
         {
-            _configuration = configuration;
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("Default"));
+            optionsBuilder.UseSqlServer(GetConnectionstring());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AccountConfiguration).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SoftwareConfiguration).Assembly);
+        }
+
+        private static string GetConnectionstring()
+        {
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder()
+            {
+                DataSource = "localhost,1433",
+                UserID = "sa",
+                Password = "cssPass1!",
+                TrustServerCertificate = true,
+            };
+            return builder.ConnectionString;
         }
     }
 }

@@ -15,19 +15,19 @@ namespace CloudSalesSystem.Controllers
         }
 
         [HttpGet("getAllAvailableSoftwares")]
-        public async Task<ActionResult<IEnumerable<Software>>> GetAllAvailableSoftwaresAsync()
+        public async Task<ActionResult<IEnumerable<Software>>> GetAllAvailableSoftwares()
         {
             return Ok(await _cSSService.GetAllAvailableSoftwaresAsync());
         }
 
-        [HttpPut("changeServiceQuantity")]
-        public async Task<ActionResult<Software>> ChangeServiceQuantity(int quantity, string accountId, string softwareId)
+        [HttpPost("orderServiceLicence")]
+        public async Task<ActionResult<Software>> OrderServiceLicence(string accountId, string softwareName)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var result = await _cSSService.ChangeServiceQuantityAsync(softwareId, accountId, quantity);
+            var result = await _cSSService.OrderSoftwareAsync( accountId, softwareName);
             return Ok(result);
 
         }

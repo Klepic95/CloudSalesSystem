@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CloudSalesSystem.DAL.Migrations
 {
     [DbContext(typeof(CSSContext))]
-    [Migration("20230914143316_InitialMigration")]
+    [Migration("20230915073156_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -42,9 +42,11 @@ namespace CloudSalesSystem.DAL.Migrations
 
             modelBuilder.Entity("CloudSalesSystem.DAL.DTOs.SoftwareDto", b =>
                 {
-                    b.Property<string>("SoftwareId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AccountRefId")
                         .IsRequired()
@@ -62,11 +64,15 @@ namespace CloudSalesSystem.DAL.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("SoftwareId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SoftwareName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("SoftwareId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AccountRefId");
 

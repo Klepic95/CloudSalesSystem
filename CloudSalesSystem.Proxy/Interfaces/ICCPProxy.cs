@@ -8,9 +8,8 @@ namespace CloudSalesSystem.Proxy.Interfaces
         Task<Software> GetSoftwareByIdAsync(string softwareId);
         Task<Software> GetSoftwareByNameAsync(string softwareName);
         Task<Software> OrderSoftwareAsync(string softwareName);
-        Task<Software> ChangeServiceQuantityAsync(string softwareId, string accountId, int quantity);
-        Task CancelAccountSoftwareAsync(string accountId, string softwareId);
+        Task<Software> ChangeServiceQuantityAsync(string accountId, string softwareName, int quantity);
+        Task<Software> CancelAccountSoftwareAsync(string accountId, string softwareName);
         Task<Software> ExtendSoftwareLicenceAsync(string accountId, string softwareName, DateTime endDate);
-        Task<Software> InsertNewSoftwareForAccountAsync(string accountId, string softwareName);
     }
 }

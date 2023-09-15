@@ -16,17 +16,17 @@ namespace CloudSalesSystem.Business
             _repository = repository;
         }
 
-        public async Task<Software> CancelAccountSoftwareByIdAsnyc(string accountId, string softwareId)
+        public async Task<Software> CancelAccountSoftwareByIdAsnyc(string accountId, string softwareName)
         {
-            await _proxy.CancelAccountSoftwareAsync(accountId, softwareId);
-            return await _repository.CancelAccountSoftwareAsync(accountId, softwareId);
+            var software = await _proxy.CancelAccountSoftwareAsync(accountId, softwareName);
+            return await _repository.CancelAccountSoftwareAsync(accountId, software);
             
         }
 
-        public async Task<Software> ChangeServiceQuantityAsync(string softwareId, string accountId, int quantity)
+        public async Task<Software> ChangeServiceQuantityAsync(string accountId, string softwareName, int quantity)
         {
-            await _proxy.ChangeServiceQuantityAsync(softwareId, accountId, quantity);
-            return await _repository.UpdateServiceQuantityAsync(softwareId, accountId, quantity);
+            var software = await _proxy.ChangeServiceQuantityAsync(accountId, softwareName, quantity);
+            return await _repository.UpdateServiceQuantityAsync(accountId, software, quantity);
         }
 
         public async Task<Software> ExtendSoftwareLicenceAsync(string accountId, string softwareName, DateTime extendedDate)
@@ -53,12 +53,6 @@ namespace CloudSalesSystem.Business
         public async Task<Account> InsertNewAccountAsync(string accountName)
         {
             return await _repository.InsertNewAccountAsync(accountName);
-        }
-
-        public async Task<Software> InsertNewAccountSoftwareAsync(string accountId, string softwareName)
-        {
-            var software = await _proxy.InsertNewSoftwareForAccountAsync(accountId, softwareName);
-            return await _repository.InsertNewAccountSoftwareAsync(accountId, software);
         }
 
         public async Task<Software> OrderSoftwareAsync(string accountId, string softwareName)

@@ -27,7 +27,9 @@ namespace CloudSalesSystem.DAL.Migrations
                 name: "Software",
                 columns: table => new
                 {
-                    SoftwareId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SoftwareId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SoftwareName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
@@ -37,7 +39,7 @@ namespace CloudSalesSystem.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Software", x => x.SoftwareId);
+                    table.PrimaryKey("PK_Software", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Software_Account_AccountRefId",
                         column: x => x.AccountRefId,
