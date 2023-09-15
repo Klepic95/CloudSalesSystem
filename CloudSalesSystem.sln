@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudSalesSystem.Business",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudSalesSystem.Proxy", "CloudSalesSystem.Proxy\CloudSalesSystem.Proxy.csproj", "{59F43496-F342-44C2-921C-F7F60D7D444F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudSalesSystem.Shared", "CloudSalesSystem.Shared\CloudSalesSystem.Shared.csproj", "{E4AE42AE-A2C2-4EDE-91A9-0B3934B299C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudSalesSystem.Shared", "CloudSalesSystem.Shared\CloudSalesSystem.Shared.csproj", "{E4AE42AE-A2C2-4EDE-91A9-0B3934B299C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudSalesSystem.Test", "CloudSalesSystem.Test\CloudSalesSystem.Test.csproj", "{8B76B619-D796-4A04-89CF-D785E93CA899}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{E4AE42AE-A2C2-4EDE-91A9-0B3934B299C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4AE42AE-A2C2-4EDE-91A9-0B3934B299C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4AE42AE-A2C2-4EDE-91A9-0B3934B299C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B76B619-D796-4A04-89CF-D785E93CA899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B76B619-D796-4A04-89CF-D785E93CA899}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B76B619-D796-4A04-89CF-D785E93CA899}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B76B619-D796-4A04-89CF-D785E93CA899}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
