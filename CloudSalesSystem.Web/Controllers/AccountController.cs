@@ -1,13 +1,15 @@
 ﻿using CloudSalesSystem.Business;
 using CloudSalesSystem.Business.Interfaces;
 using CloudSalesSystem.Shared.Models;
+using CloudSalesSystem.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 
 namespace CloudSalesSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseCSSController
     {
         private readonly ICSSService _cSSService;
 
@@ -25,26 +27,33 @@ namespace CloudSalesSystem.Controllers
         [HttpGet("getAllPurchasedSoftwares")]
         public async Task<ActionResult<IEnumerable<Software>>> GetAllPurchasedSoftwares(string accountId)
         {
+            if (!IsValidInput(accountId))
+            {
+                return BadRequest("Invalid input parameters.");
+            }
+
             return Ok(await _cSSService.GetAllPurchasedSoftwaresAsync(accountId));
         }
 
         [HttpPost("createNewAccount")]
         public async Task<ActionResult<Account>> CreateNewAccount(string accountName)
         {
-            if (!ModelState.IsValid)
+            if (!IsValidInput(accountName))
             {
-                return BadRequest(ModelState);
+                return BadRequest("Invalid input parameters.");
             }
+
             return Ok(await _cSSService.InsertNewAccountAsync(accountName));
         }
 
         [HttpPut("extendSoftwareLicence")]
         public async Task<ActionResult<Software>> ExtendSoftwareLicence(string accountId, string softwareName, DateTime extendedDate)
         {
-            if (!ModelState.IsValid)
+            if (!IsValidInput(accountId) || !IsValidInput(softwareName))
             {
-                return BadRequest(ModelState);
+                return BadRequest("Invalid input parameters.");
             }
+
             var result = await _cSSService.ExtendSoftwareLicenceAsync(accountId, softwareName, extendedDate);
             return Accepted("Software have been extended sucessfully", result);
         }
@@ -52,10 +61,11 @@ namespace CloudSalesSystem.Controllers
         [HttpPut("changeServiceQuantity")]
         public async Task<ActionResult<Software>> ChangeServiceQuantity(string accountId, string softwareName, int quantity)
         {
-            if (!ModelState.IsValid)
+            if (!IsValidInput(accountId) || !IsValidInput(softwareName))
             {
-                return BadRequest(ModelState);
+                return BadRequest("Invalid input parameters.");
             }
+
             var result = await _cSSService.ChangeServiceQuantityAsync(accountId, softwareName, quantity);
             return Ok(result);
 
@@ -64,8 +74,13 @@ namespace CloudSalesSystem.Controllers
         [HttpDelete("cancelAccountSoftware")]
         public async Task<IActionResult> CancelAccountSoftwareById(string accountId, string softwareName)
         {
+            if (!IsValidInput(accountId) || !IsValidInput(softwareName))
+            {
+                return BadRequest("Invalid input parameters.");
+            }
+
             var result = await _cSSService.CancelAccountSoftwareByIdAsnyc(accountId, softwareName);
             return Accepted("Software have been cancelled sucessfully", result);
         }
-    }
+}
 }

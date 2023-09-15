@@ -1,12 +1,13 @@
 ﻿using CloudSalesSystem.Business.Interfaces;
 using CloudSalesSystem.Shared.Models;
+using CloudSalesSystem.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CloudSalesSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CCPController : ControllerBase
+    public class CCPController : BaseCSSController
     {
         private readonly ICSSService _cSSService;
         public CCPController(ICSSService cSSService)
@@ -23,10 +24,11 @@ namespace CloudSalesSystem.Controllers
         [HttpPost("orderServiceLicence")]
         public async Task<ActionResult<Software>> OrderServiceLicence(string accountId, string softwareName)
         {
-            if (!ModelState.IsValid)
+            if (!IsValidInput(accountId) || !IsValidInput(softwareName))
             {
-                return BadRequest(ModelState);
+                return BadRequest("Both accountId and softwareName must be provided.");
             }
+
             var result = await _cSSService.OrderSoftwareAsync( accountId, softwareName);
             return Ok(result);
 
