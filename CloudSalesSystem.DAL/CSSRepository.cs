@@ -19,7 +19,7 @@ namespace CloudSalesSystem.DAL
             try
             {
                 var softwareDto = await _context.Software.FirstOrDefaultAsync(x => x.AccountRefId == accountId && x.SoftwareId == software.SoftwareId);
-                softwareDto.IsCancelled = false;
+                softwareDto.IsCancelled = true;
                 var updatedEntry = _context.Software.Attach(softwareDto).Entity;
                 _context.Entry(softwareDto).State = EntityState.Modified;
                 Save();
@@ -180,6 +180,7 @@ namespace CloudSalesSystem.DAL
             else if(account != null && softwareDto != null)
             {
                 softwareDto.Quantity = softwareDto.Quantity + 1;
+                softwareDto.IsCancelled = false;
                 var updatedEntry = _context.Software.Attach(softwareDto).Entity;
                 _context.Entry(softwareDto).State = EntityState.Modified;
                 Save();

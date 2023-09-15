@@ -20,7 +20,7 @@ namespace CloudSalesSystem.DAL.DTOs
 
         public SoftwareDto()
         {
-            Account = new AccountDto();
+
         }
 
         public SoftwareDto(string softwareId, string softwareName, int quantity, double price, DateTime endDate, bool isCancelled, string accountRefId)
@@ -45,7 +45,6 @@ namespace CloudSalesSystem.DAL.DTOs
             builder.Property(x => x.EndDate).IsRequired();
             builder.Property(x => x.Quantity).IsRequired();
             builder.Property(x => x.Price).IsRequired();
-            builder.HasOne(x => x.Account).WithMany(x => x.AccountSoftwares).HasForeignKey(x => x.AccountRefId).IsRequired();
         }
     }
 }
