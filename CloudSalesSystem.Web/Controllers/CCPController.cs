@@ -20,18 +20,5 @@ namespace CloudSalesSystem.Controllers
         {
             return Ok(await _cSSService.GetAllAvailableSoftwaresAsync());
         }
-
-        [HttpPost("orderServiceLicence")]
-        public async Task<ActionResult<Software>> OrderServiceLicence(string accountId, string softwareName)
-        {
-            if (!IsValidInput(accountId) || !IsValidInput(softwareName))
-            {
-                return BadRequest("Both accountId and softwareName must be provided.");
-            }
-
-            var result = await _cSSService.OrderSoftwareAsync( accountId, softwareName);
-            return Ok(result);
-
-        }
     }
 }
