@@ -12,7 +12,7 @@ docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=cssPass1!" -p 1433:1433
 
 Note: in above script, replace {your-name} with the actual name of your local machine
 
-4. After ensuring that connection with the SQL server exists, in the Package Manager Console execute following script: "Update-Database"
-NOTE: Setup startup and Default project in Package Manager Console to: "CloudSalesSystem.DAL"
+4. After ensuring that connection with the SQL server exists via Docker Container, in the Visual Studio>Package Manager Console, execute following script: "Update-Database"
+NOTE: Setup startup and Default project in VisualStudio>Package Manager Console to: "CloudSalesSystem.DAL"
 
 It is necessary to follow these steps in order to sucessfully run application locally!
