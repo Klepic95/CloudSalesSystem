@@ -56,7 +56,6 @@ namespace CloudSalesSystem.Controllers
 
             var result = await _cSSService.OrderSoftwareAsync(accountId, softwareName);
             return Ok(result);
-
         }
 
         [HttpPut("extendSoftwareLicence")]
@@ -81,7 +80,6 @@ namespace CloudSalesSystem.Controllers
 
             var result = await _cSSService.ChangeServiceQuantityAsync(accountId, softwareName, quantity);
             return Ok(result);
-
         }
 
         [HttpDelete("cancelAccountSoftware")]
@@ -95,5 +93,5 @@ namespace CloudSalesSystem.Controllers
             var result = await _cSSService.CancelAccountSoftwareByIdAsnyc(accountId, softwareName);
             return Accepted("Software have been cancelled sucessfully", result);
         }
-}
+    }
 }

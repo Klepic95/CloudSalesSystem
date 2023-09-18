@@ -35,4 +35,3 @@ namespace CloudSalesSystem.DAL.DTOs
         }
     }
 }
-
