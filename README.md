@@ -15,6 +15,6 @@ Note: in above script, replace {your-name} with the actual name of your local ma
 4. After ensuring that connection with the SQL server exists via Docker Container, in the Visual Studio>Package Manager Console, execute following script: "Update-Database"
 NOTE: Setup startup and Default project in VisualStudio>Package Manager Console to: "CloudSalesSystem.DAL"
 
-5. Change startup project in Visuatl studio to "CloudSaleSystem.Web" and run the solutin!
+5. Change startup project in Visuatl studio to "CloudSaleSystem.Web" and run the solution!
 
 It is necessary to follow these steps in order to sucessfully run application locally!
